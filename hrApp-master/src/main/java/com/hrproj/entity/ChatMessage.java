@@ -1,9 +1,9 @@
 package com.hrproj.entity;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+
 @Entity
 @Table(name="chat_message")
 public class ChatMessage {

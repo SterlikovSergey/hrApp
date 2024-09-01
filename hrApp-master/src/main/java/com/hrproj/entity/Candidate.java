@@ -1,9 +1,9 @@
 package com.hrproj.entity;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 

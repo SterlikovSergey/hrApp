@@ -1,16 +1,24 @@
 package com.hrproj.entity;
 
 import com.hrproj.entity.enums.RoleEnum;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name="user")
 public class User implements UserDetails {
@@ -58,60 +66,6 @@ public class User implements UserDetails {
     @Transient
     private Person person=new Person();
 
-
-
-    public User() {
-    }
-
-    public User(String passwordConfirm, RoleEnum role, String username, String password) {
-        this.passwordConfirm = passwordConfirm;
-        this.role = role;
-        this.username = username;
-        this.password = password;
-    }
-
-    public User(String passwordConfirm, RoleEnum role, String username, String password, Employee employee, Candidate candidate) {
-        this.passwordConfirm = passwordConfirm;
-        this.role = role;
-        this.username = username;
-        this.password = password;
-        this.employee = employee;
-        this.candidate = candidate;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-    public long getId() {
-        return id_user;
-    }
-
-    public void setId(long id) {
-        this.id_user = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-    public Candidate getCandidate() {
-        return candidate;
-    }
-
-    public void setCandidate(Candidate candidate) {
-        this.candidate = candidate;
-    }
-
     @Override
     public String getUsername() {
         return username;
@@ -144,22 +98,6 @@ public class User implements UserDetails {
         list.add(new SimpleGrantedAuthority(role.getAuthority()));
 
         return list;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
-    public RoleEnum getRole() {
-        return role;
-    }
-
-    public void setRole(RoleEnum role) {
-        this.role = role;
     }
 
     @Override
@@ -234,52 +172,19 @@ public class User implements UserDetails {
         this.person.setGender(gender);
     }
 
-
-    public String getActivationCode() {
-        return activationCode;
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        User user = (User) o;
+        return getId_user() != null && Objects.equals(getId_user(), user.getId_user());
     }
 
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
-    }
-
-    public long getId_user() {
-        return id_user;
-    }
-
-    public void setId_user(long id_user) {
-        this.id_user = id_user;
-    }
-
-    public Set<ChatMessage> getChatMessagesFrom() {
-        return chatMessagesFrom;
-    }
-
-    public void setChatMessagesFrom(Set<ChatMessage> chatMessagesFrom) {
-        this.chatMessagesFrom = chatMessagesFrom;
-    }
-
-    public void addChatMessagesFrom(ChatMessage chatMessageFrom) {
-        this.chatMessagesFrom.add(chatMessageFrom);
-    }
-
-    public void addChatMessagesTo(ChatMessage chatMessageTo) {
-        this.chatMessagesTo.add(chatMessageTo);
-    }
-
-    public Set<ChatMessage> getChatMessagesTo() {
-        return chatMessagesTo;
-    }
-
-    public void setChatMessagesTo(Set<ChatMessage> chatMessagesTo) {
-        this.chatMessagesTo = chatMessagesTo;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }
